@@ -8,10 +8,10 @@ class BoardGameListView extends StatefulWidget {
   const BoardGameListView({super.key});
 
   @override
-  State<BoardGameListView> createState() => _BoardGameListViewState();
+  State<BoardGameListView> createState() => BoardGameListViewState();
 }
 
-class _BoardGameListViewState extends State<BoardGameListView> {
+class BoardGameListViewState extends State<BoardGameListView> {
   final BoardGameListViewModel viewModel = BoardGameListViewModel(
     BoardGameListModel(),
   );

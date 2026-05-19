@@ -25,6 +25,7 @@ class BoardGameListModel {
       );
     }
 
+    // Filter out board games that are no longer owned
     boardGames = boardGames.where((game) => game.owned == true).toList();
   }
 }
