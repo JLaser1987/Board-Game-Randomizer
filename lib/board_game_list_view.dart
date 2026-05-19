@@ -2,6 +2,8 @@ import 'package:board_game_randomizer/board_game_list_model.dart';
 import 'package:board_game_randomizer/board_game_list_view_model.dart';
 import 'package:flutter/material.dart';
 
+import 'board_game_tile.dart';
+
 class BoardGameListView extends StatefulWidget {
   const BoardGameListView({super.key});
 
@@ -22,8 +24,8 @@ class _BoardGameListViewState extends State<BoardGameListView> {
         return ListView.builder(
           itemCount: viewModel.filteredBoardGames.length,
           itemBuilder: (context, index) {
-            return ListTile(
-              title: Text(viewModel.filteredBoardGames[index].title),
+            return BoardGameTile(
+              boardGame: viewModel.filteredBoardGames[index],
             );
           },
         );
