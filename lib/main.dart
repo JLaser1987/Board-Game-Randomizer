@@ -9,6 +9,11 @@ void main() {
 
 final GlobalKey<BoardGameListViewState> _childKey = GlobalKey();
 
+final TextEditingController _playerCountFilterTextFieldController =
+    TextEditingController();
+final TextEditingController _playTimeFilterTextFieldController =
+    TextEditingController();
+
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
 
@@ -16,7 +21,10 @@ class MainApp extends StatelessWidget {
     (int?, int?) filterResults = await showDialog(
       context: context,
       builder: (BuildContext context) {
-        return FilterDialog();
+        return FilterDialog(
+          playerCountTextFieldController: _playerCountFilterTextFieldController,
+          playTimeTextFieldController: _playTimeFilterTextFieldController,
+        );
       },
     );
 
@@ -30,7 +38,10 @@ class MainApp extends StatelessWidget {
     (int?, int?) filterResults = await showDialog(
       context: context,
       builder: (BuildContext context) {
-        return FilterDialog();
+        return FilterDialog(
+          playerCountTextFieldController: _playerCountFilterTextFieldController,
+          playTimeTextFieldController: _playTimeFilterTextFieldController,
+        );
       },
     );
 
@@ -51,7 +62,7 @@ class MainApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Board Games'),
+          title: const Center(child: Text('Board Games')),
           actions: [
             Builder(
               builder: (context) {

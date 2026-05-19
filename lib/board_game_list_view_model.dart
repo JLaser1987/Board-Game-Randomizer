@@ -62,6 +62,8 @@ class BoardGameListViewModel extends ChangeNotifier {
           .where((game) => game.estimatedPlayTimeMinutes <= playTime)
           .toList();
     }
+
+    notifyListeners();
   }
 
   Future<String> getRandomGameWithFilter(
@@ -91,6 +93,10 @@ class BoardGameListViewModel extends ChangeNotifier {
       possibleGames = possibleGames
           .where((game) => game.estimatedPlayTimeMinutes <= playTime)
           .toList();
+    }
+
+    if (possibleGames.length == 0) {
+      return 'No game meets the criteria';
     }
 
     var randomIndex = Random().nextInt(possibleGames.length);
