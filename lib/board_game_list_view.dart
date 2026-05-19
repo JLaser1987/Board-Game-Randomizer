@@ -16,10 +16,17 @@ class _BoardGameListViewState extends State<BoardGameListView> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: viewModel.filteredBoardGames.length,
-      itemBuilder: (context, index) {
-        return ListTile(title: Text(viewModel.filteredBoardGames[index]));
+    return ListenableBuilder(
+      listenable: viewModel,
+      builder: (context, child) {
+        return ListView.builder(
+          itemCount: viewModel.filteredBoardGames.length,
+          itemBuilder: (context, index) {
+            return ListTile(
+              title: Text(viewModel.filteredBoardGames[index].title),
+            );
+          },
+        );
       },
     );
   }
