@@ -50,12 +50,23 @@ class MainApp extends StatelessWidget {
     var boardGame = await _childKey.currentState?.viewModel
         .getRandomGameWithFilter(filterResults.$1, filterResults.$2);
 
+    var actions = [
+      TextButton(
+        onPressed: () {
+          Navigator.pop(context, (null, null));
+        },
+        child: const Text('Thank you'),
+      ),
+    ];
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
         if (boardGame == null) {
           return AlertDialog(
             title: Center(child: Text('No games match criteria')),
+            actions: actions,
+            actionsAlignment: MainAxisAlignment.center,
           );
         } else {
           return AlertDialog(
@@ -76,6 +87,8 @@ class MainApp extends StatelessWidget {
                 ],
               ),
             ),
+            actions: actions,
+            actionsAlignment: MainAxisAlignment.center,
           );
         }
       },
