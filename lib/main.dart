@@ -24,6 +24,7 @@ class MainApp extends StatelessWidget {
         return FilterDialog(
           playerCountTextFieldController: _playerCountFilterTextFieldController,
           playTimeTextFieldController: _playTimeFilterTextFieldController,
+          title: 'Filter Game List',
         );
       },
     );
@@ -41,6 +42,7 @@ class MainApp extends StatelessWidget {
         return FilterDialog(
           playerCountTextFieldController: _playerCountFilterTextFieldController,
           playTimeTextFieldController: _playTimeFilterTextFieldController,
+          title: 'Random Game Limits',
         );
       },
     );
@@ -51,7 +53,7 @@ class MainApp extends StatelessWidget {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(title: Text(gameTitle!));
+        return AlertDialog(title: Center(child: Text(gameTitle!)));
       },
     );
   }

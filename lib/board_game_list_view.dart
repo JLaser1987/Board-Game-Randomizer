@@ -21,14 +21,18 @@ class BoardGameListViewState extends State<BoardGameListView> {
     return ListenableBuilder(
       listenable: viewModel,
       builder: (context, child) {
-        return ListView.builder(
-          itemCount: viewModel.filteredBoardGames.length,
-          itemBuilder: (context, index) {
-            return BoardGameTile(
-              boardGame: viewModel.filteredBoardGames[index],
-            );
-          },
-        );
+        if (viewModel.filteredBoardGames.isEmpty) {
+          return Text('No board games found');
+        } else {
+          return ListView.builder(
+            itemCount: viewModel.filteredBoardGames.length,
+            itemBuilder: (context, index) {
+              return BoardGameTile(
+                boardGame: viewModel.filteredBoardGames[index],
+              );
+            },
+          );
+        }
       },
     );
   }

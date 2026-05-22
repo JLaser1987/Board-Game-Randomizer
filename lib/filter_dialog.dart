@@ -2,20 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class FilterDialog extends StatelessWidget {
-  const FilterDialog({
+  FilterDialog({
     super.key,
     required this.playerCountTextFieldController,
     required this.playTimeTextFieldController,
-  });
+    required this.title,
+  }) {
+    playerCountTextFieldController.text = '';
+    playTimeTextFieldController.text = '';
+  }
 
   final TextEditingController playerCountTextFieldController;
   final TextEditingController playTimeTextFieldController;
+  final String title;
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-      title: Text('test', textAlign: TextAlign.center),
+      title: Text(title, textAlign: TextAlign.center),
       content: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -50,7 +55,7 @@ class FilterDialog extends StatelessWidget {
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text('Playtime:'),
+                Text('Playtime (minutes):'),
                 Padding(
                   padding: EdgeInsets.all(5),
                   child: SizedBox(
@@ -78,7 +83,12 @@ class FilterDialog extends StatelessWidget {
         ),
       ),
       actions: [
-        TextButton(onPressed: () {}, child: const Text('Cancel')),
+        TextButton(
+          onPressed: () {
+            Navigator.pop(context, (null, null));
+          },
+          child: const Text('Cancel'),
+        ),
         TextButton(
           onPressed: () {
             Navigator.pop(context, (
