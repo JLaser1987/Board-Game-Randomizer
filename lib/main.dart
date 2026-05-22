@@ -47,13 +47,37 @@ class MainApp extends StatelessWidget {
       },
     );
 
-    var gameTitle = await _childKey.currentState?.viewModel
+    var boardGame = await _childKey.currentState?.viewModel
         .getRandomGameWithFilter(filterResults.$1, filterResults.$2);
 
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(title: Center(child: Text(gameTitle!)));
+        if (boardGame == null) {
+          return AlertDialog(
+            title: Center(child: Text('No games match criteria')),
+          );
+        } else {
+          return AlertDialog(
+            content: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Text(
+                    boardGame.title,
+                    style: TextStyle(color: Colors.black, fontSize: 16),
+                  ),
+                  Text(
+                    "${boardGame.minPlayerCount} - ${boardGame.maxPlayerCount} players | ${boardGame.estimatedPlayTimeMinutes} minutes",
+                    style: TextStyle(
+                      color: const Color.fromARGB(255, 73, 73, 73),
+                      fontSize: 12,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
       },
     );
   }

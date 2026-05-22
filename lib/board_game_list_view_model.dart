@@ -66,7 +66,7 @@ class BoardGameListViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<String> getRandomGameWithFilter(
+  Future<BoardGame?> getRandomGameWithFilter(
     int? playerCount,
     int? playTime,
   ) async {
@@ -96,10 +96,10 @@ class BoardGameListViewModel extends ChangeNotifier {
     }
 
     if (possibleGames.length == 0) {
-      return 'No game meets the criteria';
+      return null;
     }
 
     var randomIndex = Random().nextInt(possibleGames.length);
-    return possibleGames[randomIndex].title;
+    return possibleGames[randomIndex];
   }
 }
