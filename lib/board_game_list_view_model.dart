@@ -17,7 +17,7 @@ class BoardGame {
   final int minPlayerCount;
   final int maxPlayerCount;
   final int estimatedPlayTimeMinutes;
-  final List<String> extras;
+  final String extras;
   final bool owned;
 }
 
@@ -95,7 +95,7 @@ class BoardGameListViewModel extends ChangeNotifier {
           .toList();
     }
 
-    if (possibleGames.length == 0) {
+    if (possibleGames.isEmpty) {
       return null;
     }
 

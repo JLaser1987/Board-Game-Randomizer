@@ -3,13 +3,24 @@ import 'board_game_list_view_model.dart';
 import 'google_credentials.dart';
 
 class BoardGameListModel {
+  BoardGameListModel() {
+    create();
+  }
+
+  Future<void> create() async {
+    final gsheets = GSheets(credentials);
+    final ss = await gsheets.spreadsheet(spreadsheetId);
+    sheet = ss.worksheetByTitle('BoardGameData');
+  }
+
+  Worksheet? sheet;
+
   List<BoardGame> boardGames = [];
 
   Future<void> fetchBoardGameList() async {
-    final gsheets = GSheets(credentials);
-    final ss = await gsheets.spreadsheet(spreadsheetId);
-    final sheet = ss.worksheetByTitle('BoardGameData');
-
+    if (sheet == null) {
+      await create();
+    }
     final data = await sheet?.values.allRows(fromRow: 2);
 
     for (var game in data!) {
@@ -19,7 +30,7 @@ class BoardGameListModel {
           minPlayerCount: int.parse(game[1]),
           maxPlayerCount: int.parse(game[2]),
           estimatedPlayTimeMinutes: int.parse(game[3]),
-          extras: game[4].split('\n'),
+          extras: game[4],
           owned: bool.parse(game[5]),
         ),
       );
