@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 class BoardGame {
   BoardGame({
+    required this.row,
     required this.title,
     required this.minPlayerCount,
     required this.maxPlayerCount,
@@ -13,6 +14,7 @@ class BoardGame {
     required this.owned,
   });
 
+  final int row;
   final String title;
   final int minPlayerCount;
   final int maxPlayerCount;
