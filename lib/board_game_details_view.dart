@@ -61,7 +61,7 @@ class _BoardGameDetailsState extends State<BoardGameDetails> {
                         .removeBoardGame(widget.boardGame)
                         .then((result) {
                           if (result) {
-                            Navigator.of(context).pop("deleted");
+                            Navigator.pop(context);
                           }
                         }),
                   },
