@@ -49,7 +49,7 @@ class BoardGameListViewModel extends ChangeNotifier {
       result = await model.addBoardGame(game);
     }
 
-    await fetchBoardGames();
+    await model.fetchBoardGameList();
 
     // Update the list with the changes and reapply any filters that existed
     filterBoardGames(_currentPlayerCountFilter, _currentPlayTimeFilter);

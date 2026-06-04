@@ -21,7 +21,7 @@ class BoardGameListModel {
     if (sheet == null) {
       await create();
     }
-    final data = await sheet?.values.allRows(fromRow: 2);
+    List<List<String>>? data = await sheet?.values.allRows(fromRow: 2);
 
     boardGames = [];
 
