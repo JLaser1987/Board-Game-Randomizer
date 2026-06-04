@@ -3,21 +3,39 @@ import 'package:flutter/material.dart';
 import 'board_game_details_view.dart';
 import 'board_game_list_view_model.dart';
 
-class BoardGameTile extends StatelessWidget {
-  const BoardGameTile({super.key, required this.boardGame});
+class BoardGameTile extends StatefulWidget {
+  BoardGameTile({super.key, required this.boardGame});
 
-  final BoardGame boardGame;
+  BoardGame boardGame;
+
+  @override
+  State<BoardGameTile> createState() => _BoardGameTileState();
+}
+
+class _BoardGameTileState extends State<BoardGameTile> {
+  Future<void> _getDetailsScreenNavigate(BuildContext context) async {
+    // The result will capture whatever you passed to Navigator.pop
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => BoardGameDetails(boardGame: widget.boardGame),
+      ),
+    );
+
+    // Always verify the result isn't null (e.g., if the user swiped/hit the native back button)
+    if (result != null) {
+      setState(() {
+        widget.boardGame = result;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsetsGeometry.all(2),
       child: GestureDetector(
-        onTap: () => Navigator.of(context).push(
-          MaterialPageRoute<void>(
-            builder: (context) => BoardGameDetails(boardGame: boardGame),
-          ),
-        ),
+        onTap: () => _getDetailsScreenNavigate(context),
         child: Container(
           decoration: BoxDecoration(
             border: Border.all(color: Colors.black, width: 1.0),
@@ -30,11 +48,11 @@ class BoardGameTile extends StatelessWidget {
               crossAxisAlignment: .start,
               children: [
                 Text(
-                  boardGame.title,
+                  widget.boardGame.title,
                   style: TextStyle(color: Colors.black, fontSize: 16),
                 ),
                 Text(
-                  "${boardGame.minPlayerCount} - ${boardGame.maxPlayerCount} players | ${boardGame.estimatedPlayTimeMinutes} minutes",
+                  "${widget.boardGame.minPlayerCount} - ${widget.boardGame.maxPlayerCount} players | ${widget.boardGame.estimatedPlayTimeMinutes} minutes",
                   style: TextStyle(
                     color: const Color.fromARGB(255, 73, 73, 73),
                     fontSize: 12,
