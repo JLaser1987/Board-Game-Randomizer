@@ -1,13 +1,16 @@
+import 'package:board_game_randomizer/add_edit_board_game.dart';
 import 'package:board_game_randomizer/board_game_list_view.dart';
 import 'package:board_game_randomizer/filter_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 void main() {
-  runApp(const MainApp());
+  runApp(MaterialApp(navigatorObservers: [routeObserver], home: MainApp()));
 }
 
-final GlobalKey<BoardGameListViewState> _childKey = GlobalKey();
+final GlobalKey<BoardGameListViewState> viewModelKey = GlobalKey();
+final RouteObserver<ModalRoute<void>> routeObserver =
+    RouteObserver<ModalRoute<void>>();
 
 final TextEditingController _playerCountFilterTextFieldController =
     TextEditingController();
@@ -29,7 +32,7 @@ class MainApp extends StatelessWidget {
       },
     );
 
-    _childKey.currentState?.viewModel.filterBoardGames(
+    viewModelKey.currentState?.viewModel.filterBoardGames(
       filterResults.$1,
       filterResults.$2,
     );
@@ -47,7 +50,7 @@ class MainApp extends StatelessWidget {
       },
     );
 
-    var boardGame = await _childKey.currentState?.viewModel
+    var boardGame = await viewModelKey.currentState?.viewModel
         .getRandomGameWithFilter(filterResults.$1, filterResults.$2);
 
     var actions = [
@@ -95,6 +98,19 @@ class MainApp extends StatelessWidget {
     );
   }
 
+  Future<void> _getAddScreenNavigate(BuildContext context) async {
+    // The result will capture whatever you passed to Navigator.pop
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => AddEditBoardGame(null)),
+    );
+
+    // Always verify the result isn't null (e.g., if the user swiped/hit the native back button)
+    if (result != null) {
+      viewModelKey.currentState?.viewModel.fetchBoardGames();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -103,6 +119,14 @@ class MainApp extends StatelessWidget {
         appBar: AppBar(
           title: const Center(child: Text('Board Games')),
           actions: [
+            Builder(
+              builder: (context) {
+                return IconButton(
+                  onPressed: () => {_getAddScreenNavigate(context)},
+                  icon: Icon(Icons.add),
+                );
+              },
+            ),
             Builder(
               builder: (context) {
                 return IconButton(
@@ -125,7 +149,7 @@ class MainApp extends StatelessWidget {
             ),
           ],
         ),
-        body: Center(child: BoardGameListView(key: _childKey)),
+        body: Center(child: BoardGameListView(key: viewModelKey)),
       ),
     );
   }

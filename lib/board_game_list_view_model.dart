@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 class BoardGame {
   BoardGame({
-    required this.row,
+    this.row = -1,
     required this.title,
     required this.minPlayerCount,
     required this.maxPlayerCount,
@@ -14,7 +14,7 @@ class BoardGame {
     required this.owned,
   });
 
-  final int row;
+  int row;
   final String title;
   final int minPlayerCount;
   final int maxPlayerCount;
@@ -27,16 +27,34 @@ class BoardGameListViewModel extends ChangeNotifier {
   final BoardGameListModel model;
   List<BoardGame> filteredBoardGames = [];
 
+  int? _currentPlayerCountFilter;
+  int? _currentPlayTimeFilter;
+
   BoardGameListViewModel(this.model) {
     fetchBoardGames();
   }
 
   Future<void> fetchBoardGames() async {
-    if (model.boardGames.isEmpty) {
-      await model.fetchBoardGameList();
-    }
+    await model.fetchBoardGameList();
     filteredBoardGames = model.boardGames;
+    filterBoardGames(_currentPlayerCountFilter, _currentPlayTimeFilter);
     notifyListeners();
+  }
+
+  Future<bool> saveBoardGame(BoardGame game) async {
+    bool result;
+    if (game.row >= 2) {
+      result = await model.updateBoardGame(game.row, game);
+    } else {
+      result = await model.addBoardGame(game);
+    }
+
+    await fetchBoardGames();
+
+    // Update the list with the changes and reapply any filters that existed
+    filterBoardGames(_currentPlayerCountFilter, _currentPlayTimeFilter);
+
+    return result;
   }
 
   Future<void> filterBoardGames(int? playerCount, int? playTime) async {
@@ -46,6 +64,10 @@ class BoardGameListViewModel extends ChangeNotifier {
     }
     // Start with empty filter
     filteredBoardGames = model.boardGames;
+
+    // Save filter options so it can be reapplied when needed
+    _currentPlayerCountFilter = playerCount;
+    _currentPlayTimeFilter = playTime;
 
     // Apply player count filter if set
     if (playerCount != null) {

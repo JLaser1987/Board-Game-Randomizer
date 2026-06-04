@@ -1,5 +1,6 @@
 import 'package:board_game_randomizer/board_game_list_model.dart';
 import 'package:board_game_randomizer/board_game_list_view_model.dart';
+import 'package:board_game_randomizer/main.dart';
 import 'package:flutter/material.dart';
 
 import 'board_game_tile.dart';
@@ -11,10 +12,32 @@ class BoardGameListView extends StatefulWidget {
   State<BoardGameListView> createState() => BoardGameListViewState();
 }
 
-class BoardGameListViewState extends State<BoardGameListView> {
+class BoardGameListViewState extends State<BoardGameListView> with RouteAware {
   final BoardGameListViewModel viewModel = BoardGameListViewModel(
     BoardGameListModel(),
   );
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // 2. Subscribe to the route observer
+    routeObserver.subscribe(this, ModalRoute.of(context)!);
+  }
+
+  @override
+  void dispose() {
+    // 3. Unsubscribe when disposing
+    routeObserver.unsubscribe(this);
+    super.dispose();
+  }
+
+  @override
+  void didPopNext() {
+    // Triggers strictly when the top route is popped off, making THIS widget visible again
+    setState(() {
+      viewModel.fetchBoardGames();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

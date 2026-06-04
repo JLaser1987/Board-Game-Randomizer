@@ -47,7 +47,7 @@ class BoardGameListModel {
     boardGames = boardGames.where((game) => game.owned == true).toList();
   }
 
-  Future<void> updateBoardGame(int row, BoardGame updated) async {
+  Future<bool> updateBoardGame(int row, BoardGame updated) async {
     if (sheet == null) {
       await create();
     }
@@ -64,10 +64,13 @@ class BoardGameListModel {
       // report error
     } else {
       fetchBoardGameList();
+      return true;
     }
+
+    return false;
   }
 
-  Future<void> addBoardGame(BoardGame newGame) async {
+  Future<bool> addBoardGame(BoardGame newGame) async {
     if (sheet == null) {
       await create();
     }
@@ -85,7 +88,10 @@ class BoardGameListModel {
       // report error
     } else {
       fetchBoardGameList();
+      return true;
     }
+
+    return false;
   }
 
   Future<void> removeBoardGame(String gameTitle) async {
