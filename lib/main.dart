@@ -5,10 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 void main() {
-  runApp(MainApp());
+  runApp(MaterialApp(navigatorObservers: [routeObserver], home: MainApp()));
 }
 
 final GlobalKey<BoardGameListViewState> viewModelKey = GlobalKey();
+final RouteObserver<ModalRoute<void>> routeObserver =
+    RouteObserver<ModalRoute<void>>();
 
 final TextEditingController _playerCountFilterTextFieldController =
     TextEditingController();
