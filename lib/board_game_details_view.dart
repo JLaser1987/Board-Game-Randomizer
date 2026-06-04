@@ -1,4 +1,5 @@
 import 'package:board_game_randomizer/add_edit_board_game.dart';
+import 'package:board_game_randomizer/main.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -42,6 +43,22 @@ class _BoardGameDetailsState extends State<BoardGameDetails> {
               return IconButton(
                 onPressed: () => _getEditScreenNavigate(context),
                 icon: Icon(Icons.edit),
+              );
+            },
+          ),
+          Builder(
+            builder: (context) {
+              return IconButton(
+                onPressed: () => {
+                  viewModelKey.currentState?.viewModel
+                      .removeBoardGame(widget.boardGame)
+                      .then((result) {
+                        if (result) {
+                          Navigator.pop(context);
+                        }
+                      }),
+                },
+                icon: Icon(Icons.delete),
               );
             },
           ),

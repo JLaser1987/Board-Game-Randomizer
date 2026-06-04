@@ -94,7 +94,7 @@ class BoardGameListModel {
     return false;
   }
 
-  Future<void> removeBoardGame(String gameTitle) async {
+  Future<bool> removeBoardGame(String gameTitle) async {
     if (sheet == null) {
       await create();
     }
@@ -109,6 +109,8 @@ class BoardGameListModel {
       // report error
     } else {
       fetchBoardGameList();
+      return true;
     }
+    return false;
   }
 }
