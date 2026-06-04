@@ -94,7 +94,7 @@ class BoardGameListModel {
     return false;
   }
 
-  Future<bool> removeBoardGame(String gameTitle) async {
+  Future<bool> removeBoardGame(BoardGame game) async {
     if (sheet == null) {
       await create();
     }
@@ -102,13 +102,18 @@ class BoardGameListModel {
     bool? success = await sheet?.values.insertValueByKeys(
       false,
       columnKey: 'Still Owned',
-      rowKey: gameTitle,
+      rowKey: game.title,
     );
 
     if (success == null || !success) {
       // report error
     } else {
-      fetchBoardGameList();
+      int index = boardGames.indexWhere(
+        (boardGame) => boardGame.title == game.title,
+      );
+      boardGames.removeAt(
+        boardGames.indexWhere((boardGame) => boardGame.title == game.title),
+      );
       return true;
     }
     return false;

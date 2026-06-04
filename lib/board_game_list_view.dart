@@ -1,6 +1,5 @@
 import 'package:board_game_randomizer/board_game_list_model.dart';
 import 'package:board_game_randomizer/board_game_list_view_model.dart';
-import 'package:board_game_randomizer/main.dart';
 import 'package:flutter/material.dart';
 
 import 'board_game_tile.dart';

@@ -34,102 +34,110 @@ class _BoardGameDetailsState extends State<BoardGameDetails> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(''),
-        actions: [
-          Builder(
-            builder: (context) {
-              return IconButton(
-                onPressed: () => _getEditScreenNavigate(context),
-                icon: Icon(Icons.edit),
-              );
-            },
-          ),
-          Builder(
-            builder: (context) {
-              return IconButton(
-                onPressed: () => {
-                  viewModelKey.currentState?.viewModel
-                      .removeBoardGame(widget.boardGame)
-                      .then((result) {
-                        if (result) {
-                          Navigator.pop(context);
-                        }
-                      }),
-                },
-                icon: Icon(Icons.delete),
-              );
-            },
-          ),
-        ],
-      ),
-      body: Center(
-        child: Column(
-          children: [
-            Text(
-              widget.boardGame.title,
-              textAlign: .center,
-              style: TextStyle(color: Colors.black, fontSize: 25),
+    return PopScope(
+      canPop: false, // Prevents automatic popping
+      onPopInvokedWithResult: (didPop, result) async {
+        if (didPop) return; // If already popped elsewhere, do nothing;
+
+        Navigator.of(context).pop(widget.boardGame);
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(''),
+          actions: [
+            Builder(
+              builder: (context) {
+                return IconButton(
+                  onPressed: () => _getEditScreenNavigate(context),
+                  icon: Icon(Icons.edit),
+                );
+              },
             ),
-            Padding(padding: EdgeInsetsGeometry.fromLTRB(0, 10, 0, 0)),
-            Text(
-              "Player Count:",
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 25,
-                fontWeight: .bold,
-              ),
-            ),
-            Padding(padding: EdgeInsetsGeometry.fromLTRB(0, 10, 0, 0)),
-            Row(
-              mainAxisAlignment: .center,
-              children: [
-                Icon(Icons.people),
-                Padding(padding: EdgeInsetsGeometry.fromLTRB(0, 0, 5, 0)),
-                Text(
-                  '${widget.boardGame.minPlayerCount} - ${widget.boardGame.maxPlayerCount} players',
-                  style: TextStyle(color: Colors.black, fontSize: 20),
-                ),
-              ],
-            ),
-            Padding(padding: EdgeInsetsGeometry.fromLTRB(0, 10, 0, 0)),
-            Text(
-              "Estimated Playtime:",
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 25,
-                fontWeight: .bold,
-              ),
-            ),
-            Padding(padding: EdgeInsetsGeometry.fromLTRB(0, 10, 0, 0)),
-            Row(
-              mainAxisAlignment: .center,
-              children: [
-                FaIcon(FontAwesomeIcons.clock),
-                Padding(padding: EdgeInsetsGeometry.fromLTRB(0, 0, 5, 0)),
-                Text(
-                  '${widget.boardGame.estimatedPlayTimeMinutes} minutes',
-                  style: TextStyle(color: Colors.black, fontSize: 20),
-                ),
-              ],
-            ),
-            Padding(padding: EdgeInsetsGeometry.fromLTRB(0, 10, 0, 0)),
-            Text(
-              "Additional Items:",
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 25,
-                fontWeight: .bold,
-              ),
-            ),
-            Padding(padding: EdgeInsetsGeometry.fromLTRB(0, 10, 0, 0)),
-            Text(
-              widget.boardGame.extras,
-              textAlign: .center,
-              style: TextStyle(color: Colors.black, fontSize: 20),
+            Builder(
+              builder: (context) {
+                return IconButton(
+                  onPressed: () => {
+                    viewModelKey.currentState?.viewModel
+                        .removeBoardGame(widget.boardGame)
+                        .then((result) {
+                          if (result) {
+                            Navigator.of(context).pop("deleted");
+                          }
+                        }),
+                  },
+                  icon: Icon(Icons.delete),
+                );
+              },
             ),
           ],
+        ),
+        body: Center(
+          child: Column(
+            children: [
+              Text(
+                widget.boardGame.title,
+                textAlign: .center,
+                style: TextStyle(color: Colors.black, fontSize: 25),
+              ),
+              Padding(padding: EdgeInsetsGeometry.fromLTRB(0, 10, 0, 0)),
+              Text(
+                "Player Count:",
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 25,
+                  fontWeight: .bold,
+                ),
+              ),
+              Padding(padding: EdgeInsetsGeometry.fromLTRB(0, 10, 0, 0)),
+              Row(
+                mainAxisAlignment: .center,
+                children: [
+                  Icon(Icons.people),
+                  Padding(padding: EdgeInsetsGeometry.fromLTRB(0, 0, 5, 0)),
+                  Text(
+                    '${widget.boardGame.minPlayerCount} - ${widget.boardGame.maxPlayerCount} players',
+                    style: TextStyle(color: Colors.black, fontSize: 20),
+                  ),
+                ],
+              ),
+              Padding(padding: EdgeInsetsGeometry.fromLTRB(0, 10, 0, 0)),
+              Text(
+                "Estimated Playtime:",
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 25,
+                  fontWeight: .bold,
+                ),
+              ),
+              Padding(padding: EdgeInsetsGeometry.fromLTRB(0, 10, 0, 0)),
+              Row(
+                mainAxisAlignment: .center,
+                children: [
+                  FaIcon(FontAwesomeIcons.clock),
+                  Padding(padding: EdgeInsetsGeometry.fromLTRB(0, 0, 5, 0)),
+                  Text(
+                    '${widget.boardGame.estimatedPlayTimeMinutes} minutes',
+                    style: TextStyle(color: Colors.black, fontSize: 20),
+                  ),
+                ],
+              ),
+              Padding(padding: EdgeInsetsGeometry.fromLTRB(0, 10, 0, 0)),
+              Text(
+                "Additional Items:",
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 25,
+                  fontWeight: .bold,
+                ),
+              ),
+              Padding(padding: EdgeInsetsGeometry.fromLTRB(0, 10, 0, 0)),
+              Text(
+                widget.boardGame.extras,
+                textAlign: .center,
+                style: TextStyle(color: Colors.black, fontSize: 20),
+              ),
+            ],
+          ),
         ),
       ),
     );

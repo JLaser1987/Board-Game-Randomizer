@@ -58,7 +58,9 @@ class BoardGameListViewModel extends ChangeNotifier {
   }
 
   Future<bool> removeBoardGame(BoardGame game) async {
-    return await model.removeBoardGame(game.title);
+    bool result = await model.removeBoardGame(game);
+    filterBoardGames(_currentPlayerCountFilter, _currentPlayTimeFilter);
+    return result;
   }
 
   Future<void> filterBoardGames(int? playerCount, int? playTime) async {
